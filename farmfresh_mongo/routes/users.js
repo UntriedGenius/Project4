@@ -1,3 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const productsCtrl = require("../controllers/userCtrl");
+// const userCtrl = require("../controllers/userCtrl");
+
+// router.get("user/:id", userCtrl.getIt);
+
+module.exports = router;
