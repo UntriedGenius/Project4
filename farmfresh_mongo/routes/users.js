@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-// const userCtrl = require("../controllers/userCtrl");
+const userCtrl = require("../controllers/userCtrl");
 
-// router.get("user/:id", userCtrl.getIt);
+router.put("/:id", userCtrl.edit);
 
 module.exports = router;

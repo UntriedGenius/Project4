@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const CryptoJS = require("crypto-js");
-const { rawListeners } = require("../models/user");
+const JWT = require("jsonwebtoken");
 
 const create = async (req, res) => {
   const newUser = new User({
@@ -31,16 +31,46 @@ const login = async (req, res) => {
     const hashed = CryptoJS.AES.decrypt(user.password, process.env.PASS_SECRET);
     const pass = hashed.toString(CryptoJS.enc.Utf8);
     pass !== req.body.password && res.status(401).json("Incorrect Password");
-    res.status(200).json(user);
+
+    const token = jwt.sign({
+      id:user.id,
+      isSeller: user.isSeller,
+    }, process.env.JWT_SECRET,
+    {expiresIn:"3d"}
+    )
+
+    const {password, ...others} = user.doc
+
+    res.status(200).json(...others, token);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+const edit = async (req, res) => {
+  const verifyToken =(req, res, next)=>{
+      const authHeader = req.body.token
+      if(authHeader) {
+          jwt.verify(token, process.env.JWT_SECRET, (err ,user)=>{if(err) res.status(403).json("Invalid token");
+          req.user = user
+        })
+      } else {
+        return res.status(401).json("No Auth ma boi")
+      }
+  }
+  try {
+
+    res.status(200).json(...others, token);
   } catch (err) {
     res.status(500).json(err);
   }
 };
 
+
+
 module.exports = {
   create,
   login,
-  // edit,
+  edit,
   // deleteIt,
   // getIt,
 };
