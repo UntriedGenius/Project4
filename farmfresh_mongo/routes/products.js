@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const productsCtrl = require("../controllers/productCtrl");
+const productCtrl = require("../controllers/productCtrl");
 
-router.get("/", productsCtrl.getAll);
-router.delete("/:id", libraryCtrl.deleteIt);
-router.put("/:id", libraryCtrl.removeBook);
+router.post("/", productCtrl.create);
+router.put("/:id", productCtrl.edit);
+router.delete("/:id", productCtrl.deleteIt);
+router.get("/find/:id", productCtrl.get);
+router.get("/", productCtrl.getEm);
 
 module.exports = router;

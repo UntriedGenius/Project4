@@ -6,6 +6,9 @@ require("dotenv").config();
 require("./db/database");
 userRouter = require("./routes/users.js");
 authRouter = require("./routes/auth.js");
+proRouter = require("./routes/products");
+cartRouter = require("./routes/cart.js");
+orderRouter = require("./routes/order.js");
 
 var corsOptions = {
   origin: "http://localhost:8081",
@@ -21,6 +24,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/products", proRouter);
+app.use("/cart", cartRouter);
+app.use("/order", orderRouter);
 
 // simple route
 app.get("/", (req, res) => {
